@@ -3,16 +3,19 @@
   "version": "0.0.0",
   "description": "coming soon",
   "main": "javascript/JZZ.midi.STY.js",
-  "scripts": {
-  },
-  "keywords": [
-  ],
+  "scripts": {},
+  "keywords": [],
   "author": "jazz-soft (https://jazz-soft.net/)",
   "dependencies": {
     "jzz": "^1.6.1",
     "jzz-midi-smf": "^1.7.3"
   },
   "devDependencies": {
+    "eslint": "^8.38.0",
+    "grunt": "^1.6.1",
+    "grunt-contrib-jshint": "^3.2.0",
+    "grunt-contrib-uglify": "^5.2.2",
+    "jzz-midi-gm": "^1.3.3"
   },
   "repository": {
     "type": "git",
