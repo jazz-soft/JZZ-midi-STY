@@ -15,4 +15,10 @@
   /* istanbul ignore next */
   if (JZZ.MIDI.STY) return;
 
+  function STY(data) {
+    if (!(data instanceof JZZ.MIDI.SMF)) data = new JZZ.MIDI.SMF(data);
+
+  }
+
+  JZZ.MIDI.STY = STY;
 });
