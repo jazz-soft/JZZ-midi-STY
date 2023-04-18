@@ -15,9 +15,35 @@
   /* istanbul ignore next */
   if (JZZ.MIDI.STY) return;
 
-  function STY(data) {
-    if (!(data instanceof JZZ.MIDI.SMF)) data = new JZZ.MIDI.SMF(data);
+  function STY(smf) {
+    var i, t;
+    if (!(smf instanceof JZZ.MIDI.SMF)) smf = new JZZ.MIDI.SMF(smf);
+    for (i = 0; i < smf.length; i++) {
+      if (smf[i].type == 'MTrk') {
+        if (!this.mtrk) {
+          t = _splitMTrk(smf[i]);
+          this.mtrk = t;
+        }
+      }
+    }
+  }
 
+  function _splitMTrk(trk) {
+    var i, t, m;
+    var ttt = [];
+    var cl = 0;
+    t = new JZZ.MIDI.SMF.MTrk();
+    ttt.push(t);
+    for (i = 0; i < trk.length; i++) {
+      m = trk[i];
+      if (m.ff == 6) {
+        cl = m.tt;
+        t = new JZZ.MIDI.SMF.MTrk();
+        ttt.push(t);
+      }
+      t.add(m.tt - cl, m);
+    }
+    return ttt;
   }
 
   JZZ.MIDI.STY = STY;
