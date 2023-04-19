@@ -54,7 +54,7 @@ function load_sty(data) {
 }
 function display_sty(sty) {
   display.innerHTML = '';
-  gui = new Cell(display, 0, 'Style', 'coming soon...', sty);
+  gui = new Cell(display, 0, 'Style', sty.name, sty);
   gui.populate = populate;
   gui.expand();
 }
@@ -107,7 +107,11 @@ function square(t, s) {
   return sq;
 }
 function populate() {
+  var i;
   this.cells = [];
+  for (i = 0; i < this.ref.mrk.length; i++) {
+    this.cells.push(new Cell(this.more, 0, 'Track', this.ref.mrk[i]));
+  }
 }
 </script>
 
