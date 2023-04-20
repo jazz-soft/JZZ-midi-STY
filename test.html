@@ -54,13 +54,13 @@ function load_sty(data) {
 }
 function display_sty(sty) {
   display.innerHTML = '';
-  gui = new Cell(display, 0, 'Style', sty.name, sty);
-  gui.populate = populate;
+  gui = new Cell(display, 0, 'Style', sty.name, sty, populate);
   gui.expand();
 }
 
-function Cell(parent, type, title, text, ref) {
+function Cell(parent, type, title, text, ref, pop) {
   var self = this;
+  this.populate = pop;
   this.div = document.createElement('div');
   var knob = square(type);//document.createElement('span');
   if (type == 1) {
@@ -100,6 +100,25 @@ Cell.prototype.expand = function() {
 Cell.prototype.collapse = function() {
   this.more.classList.add('hide');
 }
+var svg_play = '<svg fill="#555" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/><path d="M0 0h24v24H0z" fill="none"/></svg>';
+var svg_stop = '<svg fill="#555" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 6h12v12H6z"/></svg>';
+function MidiCell(parent, title, smf) {
+  var a, p, q;
+  var cell = new Cell(parent, 0, title, '');
+  a = document.createElement('a');
+  a.href = 'data:audio/midi;base64,' + JZZ.lib.toBase64(smf.dump());
+  a.download = title + '.mid';
+  q = square(1);
+  q.innerHTML = '<svg fill="#555" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/><path fill="none" d="M0 0h24v24H0z"/></svg>';
+  a.appendChild(q);
+  a.title = 'export';
+  cell.div.appendChild(a);
+  p = square(1);
+  p.innerHTML = svg_play;
+  p.title = 'play';
+  cell.div.appendChild(p);
+  return cell;
+}
 function square(t, s) {
   sq = document.createElement('span');
   sq.className = t ? 'knobb' : 'knob';
@@ -107,10 +126,16 @@ function square(t, s) {
   return sq;
 }
 function populate() {
-  var i;
+  this.cells = [];
+  this.cells.push(new Cell(this.more, 1, 'MTrk', '', this.ref, populate_mtrk));
+}
+function populate_mtrk() {
+  var i, smf;
   this.cells = [];
   for (i = 0; i < this.ref.mrk.length; i++) {
-    this.cells.push(new Cell(this.more, 0, 'Track', this.ref.mrk[i]));
+    smf = new JZZ.MIDI.SMF();
+    smf.push(this.ref.trk[this.ref.mrk[i]]);
+    this.cells.push(new MidiCell(this.more, this.ref.mrk[i], smf));
   }
 }
 </script>
