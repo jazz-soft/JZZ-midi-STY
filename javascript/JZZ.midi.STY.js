@@ -18,6 +18,7 @@
   function STY(smf) {
     var i, j, k, s, t, x;
     if (!(smf instanceof JZZ.MIDI.SMF)) smf = new JZZ.MIDI.SMF(smf);
+    this.ppqn = smf.ppqn;
     for (i = 0; i < smf.length; i++) {
       if (smf[i].type == 'MTrk') {
         if (!this.mtrk) {
@@ -28,6 +29,15 @@
             t = x[j];
             s = t.title;
             if (s == '') {
+              for (k = 0; k < t.length; k++) {
+                if (t[k].isTempo()) {
+                  this.tempo = t[k].getTempo();
+                  this.bpm = Math.round(60000000 / this.tempo);
+                }
+                else if (t[k].isTimeSignature()) {
+                  this.tsig = t[k].getTimeSignature().join('/');
+                }
+              }
             }
             else if (s == 'SFF1' || s == 'SFF2') {
               for (k = 0; k < t.length; k++) if (t[k].ff == 3) this.name = t[k].dd;
