@@ -26,6 +26,7 @@ panel.innerHTML = 'Please run <tt style="background-color:#bbf;"><b>npm install<
 JZZ.synth.Tiny.register('Web Audio');
 var SMF = JZZ.MIDI.SMF;
 var STY = JZZ.MIDI.STY;
+var midi_out = JZZ().openMidiOut();
 panel.innerHTML = '';
 var input = document.createElement('input');
 input.type = 'file';
@@ -117,6 +118,33 @@ function MidiCell(parent, title, smf) {
   p.innerHTML = svg_play;
   p.title = 'play';
   cell.div.appendChild(p);
+
+  var player;
+  var playing = false;
+  p.addEventListener('click', function() {
+    if (playing) {
+      if (player) {
+        player.stop();
+        player.onEnd();
+      }
+    }
+    else {
+      if (!player) {
+        player = smf.player();
+        player.connect(midi_out);
+        player.onEnd = function() {
+          playing = false;
+          p.innerHTML = svg_play;
+          p.title = 'play';
+        };
+      }
+      playing = true;
+      p.innerHTML = svg_stop;
+      p.title = 'stop';
+      player.play();
+    }
+  });
+
   return cell;
 }
 function square(t, s) {
