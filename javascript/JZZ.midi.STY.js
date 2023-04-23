@@ -52,6 +52,11 @@
           this.casm = _splitCASM(smf[i].data);
         }
       }
+      if (smf[i].type == 'OTSc') {
+        if (!this.otsc) {
+          this.otsc = _splitOTSc(smf[i].data);
+        }
+      }
     }
   }
 
@@ -105,6 +110,22 @@
       }
     } 
     return cseg;
+  }
+  function _splitOTSc(s) {
+    var t, len, trk;
+    var otsc = [];
+    var p = 0;
+    while (p < s.length) {
+      t = s.substr(p, 4);
+      len = (s.charCodeAt(p + 4) << 24) + (s.charCodeAt(p + 5) << 16) + (s.charCodeAt(p + 6) << 8) + s.charCodeAt(p + 7);
+      p += 8;
+      if (t == 'MTrk') {
+        trk = new JZZ.MIDI.SMF.MTrk(s.substr(p, len), 0);
+        if (trk) otsc.push(trk);
+      }
+      p += len;
+    }
+    return otsc;
   }
 
   JZZ.MIDI.STY = STY;

@@ -157,6 +157,7 @@ function populate() {
   this.cells = [];
   this.cells.push(new Cell(this.more, 1, 'MTrk', [this.ref.tsig || '', this.ref.bpm ? this.ref.bpm + ' bpm' : '' ].join(' ').trim(), this.ref, populate_mtrk));
   if (this.ref.casm) this.cells.push(new Cell(this.more, 1, 'CASM', '', this.ref, populate_casm));
+  if (this.ref.otsc) this.cells.push(new Cell(this.more, 1, 'OTSc', '', this.ref, populate_otsc));
 }
 function populate_mtrk() {
   var i, j, t, smf, trk;
@@ -172,9 +173,19 @@ function populate_mtrk() {
   }
 }
 function populate_casm() {
+  var i;
   this.cells = [];
   for (i = 0; i < this.ref.casm.length; i++) {
     this.cells.push(new Cell(this.more, 0, this.ref.casm[i].sdec, '', this.ref));
+  }
+}
+function populate_otsc() {
+  var i, smf;
+  this.cells = [];
+  for (i = 0; i < this.ref.otsc.length; i++) {
+    smf = new JZZ.MIDI.SMF();
+    smf.push(this.ref.otsc[i]);
+    this.cells.push(new MidiCell(this.more, 'MTrk ' + (i + 1), smf));
   }
 }
 </script>
