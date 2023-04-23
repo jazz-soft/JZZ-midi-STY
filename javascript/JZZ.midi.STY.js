@@ -47,6 +47,11 @@
           }
         }
       }
+      if (smf[i].type == 'CASM') {
+        if (!this.casm) {
+          this.casm = _splitCASM(smf[i].data);
+        }
+      }
     }
   }
 
@@ -68,6 +73,38 @@
       t.add(m.tt - cl, m);
     }
     return ttt;
+  }
+  function _splitCASM(s) {
+    var t, len, cseg;
+    var casm = [];
+    var p = 0;
+    while (p < s.length) {
+      t = s.substr(p, 4);
+      len = (s.charCodeAt(p + 4) << 24) + (s.charCodeAt(p + 5) << 16) + (s.charCodeAt(p + 6) << 8) + s.charCodeAt(p + 7);
+      p += 8;
+      if (t == 'CSEG') {
+        cseg = _splitCSEG(s.substr(p, len));
+        if (cseg) casm.push(cseg);
+      }
+      p += len;
+    }
+    return casm;
+  }
+  function _splitCSEG(s) {
+    var t, len;
+    var cseg = {};
+    var p = 0;
+    while (p < s.length) {
+      t = s.substr(p, 4);
+      len = (s.charCodeAt(p + 4) << 24) + (s.charCodeAt(p + 5) << 16) + (s.charCodeAt(p + 6) << 8) + s.charCodeAt(p + 7);
+      p += 8;
+      if (t == 'Sdec') {
+        cseg.sdec = s.substr(p, len);
+        p += len;
+        break;
+      }
+    } 
+    return cseg;
   }
 
   JZZ.MIDI.STY = STY;

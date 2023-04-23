@@ -156,6 +156,7 @@ function square(t, s) {
 function populate() {
   this.cells = [];
   this.cells.push(new Cell(this.more, 1, 'MTrk', [this.ref.tsig || '', this.ref.bpm ? this.ref.bpm + ' bpm' : '' ].join(' ').trim(), this.ref, populate_mtrk));
+  if (this.ref.casm) this.cells.push(new Cell(this.more, 1, 'CASM', '', this.ref, populate_casm));
 }
 function populate_mtrk() {
   var i, j, t, smf, trk;
@@ -168,6 +169,12 @@ function populate_mtrk() {
     for (j = 0; j < t.length; j++) trk.add(t[j].tt, t[j]);
     smf.push(trk);
     this.cells.push(new MidiCell(this.more, this.ref.mrk[i], smf));
+  }
+}
+function populate_casm() {
+  this.cells = [];
+  for (i = 0; i < this.ref.casm.length; i++) {
+    this.cells.push(new Cell(this.more, 0, this.ref.casm[i].sdec, '', this.ref));
   }
 }
 </script>
