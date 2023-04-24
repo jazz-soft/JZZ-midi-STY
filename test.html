@@ -158,6 +158,7 @@ function populate() {
   this.cells.push(new Cell(this.more, 1, 'MTrk', [this.ref.tsig || '', this.ref.bpm ? this.ref.bpm + ' bpm' : '' ].join(' ').trim(), this.ref, populate_mtrk));
   if (this.ref.casm) this.cells.push(new Cell(this.more, 1, 'CASM', '', this.ref, populate_casm));
   if (this.ref.otsc) this.cells.push(new Cell(this.more, 1, 'OTSc', '', this.ref, populate_otsc));
+  if (this.ref.fnrc) this.cells.push(new Cell(this.more, 1, 'FNRc', '', this.ref, populate_fnrc));
 }
 function populate_mtrk() {
   var i, j, t, smf, trk;
@@ -186,6 +187,13 @@ function populate_otsc() {
     smf = new JZZ.MIDI.SMF();
     smf.push(this.ref.otsc[i]);
     this.cells.push(new MidiCell(this.more, 'MTrk ' + (i + 1), smf));
+  }
+}
+function populate_fnrc() {
+  var i, smf;
+  this.cells = [];
+  for (i = 0; i < this.ref.fnrc.length; i++) {
+    this.cells.push(new Cell(this.more, 0, 'FRMP', ''));
   }
 }
 </script>

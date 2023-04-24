@@ -57,6 +57,11 @@
           this.otsc = _splitOTSc(smf[i].data);
         }
       }
+      if (smf[i].type == 'FNRc') {
+        if (!this.fnrc) {
+          this.fnrc = _splitFNRc(smf[i].data);
+        }
+      }
     }
   }
 
@@ -108,7 +113,7 @@
         p += len;
         break;
       }
-    } 
+    }
     return cseg;
   }
   function _splitOTSc(s) {
@@ -126,6 +131,51 @@
       p += len;
     }
     return otsc;
+  }
+  function _splitFNRc(s) {
+    var t, len, fnrp;
+    var fnrc = [];
+    var p = 0;
+    while (p < s.length) {
+      t = s.substr(p, 4);
+      len = (s.charCodeAt(p + 4) << 24) + (s.charCodeAt(p + 5) << 16) + (s.charCodeAt(p + 6) << 8) + s.charCodeAt(p + 7);
+      p += 8;
+      if (t == 'FNRP') {
+        fnrp = _splitFNRP(s.substr(p, len));
+        if (fnrp) fnrc.push(fnrp);
+      }
+      p += len;
+    }
+    return fnrc;
+  }
+  function _splitFNRP(s) {
+    var t, len;
+    var fnrp = {};
+    var p = 0;
+    fnrp.tempo = (s.charCodeAt(p) << 16) + (s.charCodeAt(p + 1) << 8) + s.charCodeAt(p + 2);
+    fnrp.bpm = Math.round(60000000 / fnrp.tempo);
+    p += 3;
+    fnrp.tsig = [s.charCodeAt(p), s.charCodeAt(p + 1)];
+    p += 2;
+    while (p < s.length) {
+      t = s.substr(p, 4);
+      len = (s.charCodeAt(p + 4) << 24) + (s.charCodeAt(p + 5) << 16) + (s.charCodeAt(p + 6) << 8) + s.charCodeAt(p + 7);
+      p += 8;
+      if (t == 'Mnam') {
+        fnrp.name = s.substr(p, len);
+      }
+      else if (t == 'Gnam') {
+        fnrp.genre = s.substr(p, len);
+      }
+      else if (t == 'Kwd1') {
+        fnrp.kwd1 = s.substr(p, len);
+      }
+      else if (t == 'Kwd2') {
+        fnrp.kwd2 = s.substr(p, len);
+      }
+      p += len;
+    }
+    return fnrp;
   }
 
   JZZ.MIDI.STY = STY;
