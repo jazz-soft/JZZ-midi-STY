@@ -155,7 +155,7 @@ function square(t, s) {
 }
 function populate() {
   this.cells = [];
-  this.cells.push(new Cell(this.more, 1, 'MTrk', [this.ref.tsig || '', this.ref.bpm ? this.ref.bpm + ' bpm' : '' ].join(' ').trim(), this.ref, populate_mtrk));
+  this.cells.push(new Cell(this.more, 1, 'MTrk', [this.ref.tsig || '', this.ref.bpm ? this.ref.bpm + ' bpm' : '' ].join('; ').trim(), this.ref, populate_mtrk));
   if (this.ref.casm) this.cells.push(new Cell(this.more, 1, 'CASM', '', this.ref, populate_casm));
   if (this.ref.otsc) this.cells.push(new Cell(this.more, 1, 'OTSc', '', this.ref, populate_otsc));
   if (this.ref.fnrc) this.cells.push(new Cell(this.more, 1, 'FNRc', '', this.ref, populate_fnrc));
@@ -190,10 +190,15 @@ function populate_otsc() {
   }
 }
 function populate_fnrc() {
-  var i, smf;
+  var i, x, a;
   this.cells = [];
   for (i = 0; i < this.ref.fnrc.length; i++) {
-    this.cells.push(new Cell(this.more, 0, 'FRMP', ''));
+    x = this.ref.fnrc[i];
+    a = [x.tsig.join('/'), x.bpm + ' bpm'];
+    if (x.genre) a.push('genre: ' + x.genre);
+    if (x.kwd1) a.push('keywords: ' + x.kwd1);
+    if (x.kwd2) a.push('keywords: ' + x.kwd2);
+    this.cells.push(new Cell(this.more, 0, x.name + '&nbsp;&nbsp;', a.join('; ')));
   }
 }
 </script>
