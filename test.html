@@ -3,6 +3,7 @@
 <head>
 <title>Style View</title>
 <script src="node_modules/jzz/javascript/JZZ.js"></script>
+<script src="node_modules/jzz-gui-select/javascript/JZZ.gui.Select.js"></script>
 <script src="node_modules/jzz-synth-tiny/javascript/JZZ.synth.Tiny.js"></script>
 <script src="node_modules/jzz-midi-smf/javascript/JZZ.midi.SMF.js"></script>
 <script src="javascript/JZZ.midi.STY.js"></script>
@@ -26,8 +27,9 @@ panel.innerHTML = 'Please run <tt style="background-color:#bbf;"><b>npm install<
 JZZ.synth.Tiny.register('Web Audio');
 var SMF = JZZ.MIDI.SMF;
 var STY = JZZ.MIDI.STY;
-var midi_out = JZZ().openMidiOut();
-panel.innerHTML = '';
+panel.innerHTML = 'Midi-Out: <select id="midi_out"></select> File: ';
+var midi_out = JZZ.gui.SelectMidiOut({ at: 'midi_out' });
+midi_out.select();
 var input = document.createElement('input');
 input.type = 'file';
 input.accept = '.sty,.sst,.prs';
@@ -159,6 +161,7 @@ function populate() {
   if (this.ref.casm) this.cells.push(new Cell(this.more, 1, 'CASM', '', this.ref, populate_casm));
   if (this.ref.otsc) this.cells.push(new Cell(this.more, 1, 'OTSc', '', this.ref, populate_otsc));
   if (this.ref.fnrc) this.cells.push(new Cell(this.more, 1, 'FNRc', '', this.ref, populate_fnrc));
+  if (this.ref.mhhd) this.cells.push(new Cell(this.more, 0, 'MHhd', 'not supported'));
 }
 function populate_mtrk() {
   var i, j, t, smf, trk;

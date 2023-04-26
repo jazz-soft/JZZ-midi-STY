@@ -62,6 +62,7 @@
           this.fnrc = _splitFNRc(smf[i].data);
         }
       }
+      if (smf[i].type == 'MHhd') this.mhhd = true;
     }
   }
 
