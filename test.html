@@ -177,10 +177,23 @@ function populate_mtrk() {
   }
 }
 function populate_casm() {
-  var i;
+  var i, j, cell;
   this.cells = [];
   for (i = 0; i < this.ref.casm.length; i++) {
-    this.cells.push(new Cell(this.more, 0, this.ref.casm[i].sdec, '', this.ref));
+    this.cells.push(new Cell(this.more, 1, this.ref.casm[i].sdec, '', this.ref.casm[i], populate_ctab));
+  }
+}
+function populate_ctab() {
+  var i;
+  this.cells = [];
+  if (this.ref.ctab) for (i = 0; i < this.ref.ctab.length; i++) {
+    this.cells.push(new Cell(this.more, 0, 'Ctab', '', this.ref));
+  }
+  if (this.ref.ctb2) for (i = 0; i < this.ref.ctb2.length; i++) {
+    this.cells.push(new Cell(this.more, 0, 'Ctb2', '', this.ref));
+  }
+  if (this.ref.cntt) for (i = 0; i < this.ref.cntt.length; i++) {
+    this.cells.push(new Cell(this.more, 0, 'Cntt', '', this.ref));
   }
 }
 function populate_otsc() {

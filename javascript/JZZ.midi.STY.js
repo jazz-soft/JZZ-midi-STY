@@ -102,7 +102,7 @@
     return casm;
   }
   function _splitCSEG(s) {
-    var t, len;
+    var t, len, x;
     var cseg = {};
     var p = 0;
     while (p < s.length) {
@@ -110,12 +110,42 @@
       len = (s.charCodeAt(p + 4) << 24) + (s.charCodeAt(p + 5) << 16) + (s.charCodeAt(p + 6) << 8) + s.charCodeAt(p + 7);
       p += 8;
       if (t == 'Sdec') {
-        cseg.sdec = s.substr(p, len);
-        p += len;
-        break;
+        if (!cseg.sdec) cseg.sdec = s.substr(p, len);
       }
+      if (t == 'Ctab') {
+        if (!cseg.ctab) cseg.ctab = [];
+        x = _splitCtab(s.substr(p, len));
+        if (x) cseg.ctab.push(x);
+      }
+      if (t == 'Ctb2') {
+        if (!cseg.ctb2) cseg.ctb2 = [];
+        x = _splitCtb2(s.substr(p, len));
+        if (x) cseg.ctb2.push(x);
+      }
+      if (t == 'Cntt') {
+        if (!cseg.cntt) cseg.cntt = [];
+        x = _splitCntt(s.substr(p, len));
+        if (x) cseg.cntt.push(x);
+      }
+      p += len;
     }
     return cseg;
+  }
+  function _splitCtb(s) {
+    var ctb = {};
+    return ctb;    
+  }
+  function _splitCtab(s) {
+    var ctb = _splitCtb(s);
+    return ctb;    
+  }
+  function _splitCtb2(s) {
+    var ctb = _splitCtb(s);
+    return ctb;    
+  }
+  function _splitCntt(s) {
+    var cntt = {};
+    return cntt;    
   }
   function _splitOTSc(s) {
     var t, len, trk;
