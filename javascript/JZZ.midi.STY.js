@@ -23,7 +23,7 @@
       if (smf[i].type == 'MTrk') {
         if (!this.mtrk) {
           x = _splitMTrk(smf[i]);
-          this.mrk = [];
+          this.mtrk = [];
           this.trk = {};
           for (j = 0; j < x.length; j++) {
             t = x[j];
@@ -42,7 +42,7 @@
             else if (s == 'SFF1' || s == 'SFF2') {
               for (k = 0; k < t.length; k++) if (t[k].ff == 3) this.name = t[k].dd;
             }
-            else this.mrk.push(s);
+            else this.mtrk.push(s);
             this.trk[s] = t;
           }
         }
@@ -133,19 +133,23 @@
   }
   function _splitCtb(s) {
     var ctb = {};
-    return ctb;    
+    ctb.src = s.charCodeAt(0);
+    ctb.name = s.substr(1, 8).trim();
+    ctb.dest = s.charCodeAt(9);
+    //console.log(ctb);
+    return ctb;
   }
   function _splitCtab(s) {
     var ctb = _splitCtb(s);
-    return ctb;    
+    return ctb;
   }
   function _splitCtb2(s) {
     var ctb = _splitCtb(s);
-    return ctb;    
+    return ctb;
   }
   function _splitCntt(s) {
     var cntt = {};
-    return cntt;    
+    return cntt;
   }
   function _splitOTSc(s) {
     var t, len, trk;
