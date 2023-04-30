@@ -136,6 +136,9 @@
     ctb.src = s.charCodeAt(0);
     ctb.name = s.substr(1, 8).trim();
     ctb.dest = s.charCodeAt(9);
+    ctb.editable = s.charCodeAt(10);
+    ctb.notes = s.charCodeAt(11) * 0x100 + s.charCodeAt(12);
+    ctb.chords = s.charCodeAt(13) * 0x100000000 + s.charCodeAt(14) * 0x1000000 + s.charCodeAt(15) * 0x10000 + s.charCodeAt(16) * 0x100 + s.charCodeAt(17);
     //console.log(ctb);
     return ctb;
   }
@@ -212,6 +215,18 @@
     }
     return fnrp;
   }
+
+  function chordName(n) {
+    return [
+      'Maj', 'Maj6', 'Maj7', 'Maj7#11', 'Maj(9)', 'Maj7(9)', 'Maj6(9)', 'aug',
+      'min', 'min6', 'min7', 'min7b5', 'min(9)', 'min7(9)', 'min7(11)', 'minMaj7', 'minMaj7(9)',
+      'dim', 'dim7', '7', '7sus4', '7b5', '7(9)', '7#11', '7(13)', '7(b9)', '7(b13)', '7(#9)',
+      'Maj7aug', '7aug', '1+8', '1+5', 'sus4', '1+2+5', 'cancel'
+    ][n];
+  }
+
+  STY.chordName = chordName;
+  STY.prototype.chordName = chordName;
 
   JZZ.MIDI.STY = STY;
 });

@@ -194,15 +194,33 @@ function populate_ctab() {
   this.cells = [];
   if (this.ref.ctab) for (i = 0; i < this.ref.ctab.length; i++) {
     t = this.ref.ctab[i];
-    this.cells.push(new Cell(this.more, 1, 'Ctab ' + hex(t.src), t.name + ' ⇒ ' + part(t.dest), this.ref));
+    this.cells.push(new Cell(this.more, 1, 'Ctab ' + hex(t.src) + (t.editable ? ' *' : ''), t.name + ' ⇒ ' + part(t.dest), t, populate_ctb));
   }
   if (this.ref.ctb2) for (i = 0; i < this.ref.ctb2.length; i++) {
-    this.cells.push(new Cell(this.more, 1, 'Ctb2 ' + hex(t.src), t.name + ' ⇒ ' + part(t.dest), this.ref));
-    this.cells.push(new Cell(this.more, 0, 'Ctb2', '', this.ref));
+    t = this.ref.ctab[i];
+    this.cells.push(new Cell(this.more, 1, 'Ctb2 ' + hex(t.src) + (t.editable ? ' *' : ''), t.name + ' ⇒ ' + part(t.dest), t, populate_ctb));
   }
   if (this.ref.cntt) for (i = 0; i < this.ref.cntt.length; i++) {
     this.cells.push(new Cell(this.more, 0, 'Cntt', '', this.ref));
   }
+}
+function populate_ctb() {
+  var i, m;
+  var notes = [];
+  var chords = [];
+  m = 1;
+  this.cells = [];
+  for (i = 0; i < 12; i++) {
+    if (!(this.ref.notes & m)) notes.push(['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B'][i]);
+    m <<= 1;
+  }
+  this.cells.push(new Cell(this.more, 0, 'Note mute', notes.join(' ') || 'none'));
+  m = 1;
+  for (i = 0; i < 33; i++) {
+    if (!(this.ref.chords & m)) chords.push(JZZ.MIDI.STY.chordName(i));
+    m <<= 1;
+  }
+  this.cells.push(new Cell(this.more, 0, 'Chord mute', chords.join(' ') || 'none'));
 }
 function populate_otsc() {
   var i, smf;
