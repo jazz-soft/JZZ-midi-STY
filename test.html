@@ -158,9 +158,6 @@ function square(t, s) {
 function hex(n) {
   return ('0' + n.toString(16).toUpperCase()).substr(-2);
 }
-function part(n) {
-  return { 8: 'sub rhythm', 9: 'rhythm', 10: 'bass', 11: 'chord 1', 12: 'chord 2', 13: 'pad', 14: 'phrase 1', 15: 'phrase 2' }[n] || n;
-}
 function populate() {
   this.cells = [];
   this.cells.push(new Cell(this.more, 1, 'MTrk', [this.ref.tsig || '', this.ref.bpm ? this.ref.bpm + ' bpm' : '' ].join('; ').trim(), this.ref, populate_mtrk));
@@ -194,33 +191,49 @@ function populate_ctab() {
   this.cells = [];
   if (this.ref.ctab) for (i = 0; i < this.ref.ctab.length; i++) {
     t = this.ref.ctab[i];
-    this.cells.push(new Cell(this.more, 1, 'Ctab ' + hex(t.src) + (t.editable ? ' *' : ''), t.name + ' ⇒ ' + part(t.dest), t, populate_ctb));
+    this.cells.push(new Cell(this.more, 1, 'Ctab ' + hex(t.src) + (t.editable ? ' *' : ''), t.name + ' ⇒ ' + JZZ.MIDI.STY.partName(t.dest), t, populate_ctb));
   }
   if (this.ref.ctb2) for (i = 0; i < this.ref.ctb2.length; i++) {
-    t = this.ref.ctab[i];
-    this.cells.push(new Cell(this.more, 1, 'Ctb2 ' + hex(t.src) + (t.editable ? ' *' : ''), t.name + ' ⇒ ' + part(t.dest), t, populate_ctb));
+    t = this.ref.ctb2[i];
+    this.cells.push(new Cell(this.more, 1, 'Ctb2 ' + hex(t.src) + (t.editable ? ' *' : ''), t.name + ' ⇒ ' + JZZ.MIDI.STY.partName(t.dest), t, populate_ctb));
   }
   if (this.ref.cntt) for (i = 0; i < this.ref.cntt.length; i++) {
     this.cells.push(new Cell(this.more, 0, 'Cntt', '', this.ref));
   }
 }
 function populate_ctb() {
-  var i, m;
-  var notes = [];
-  var chords = [];
+  var i, m, x;
+  x = [];
   m = 1;
   this.cells = [];
   for (i = 0; i < 12; i++) {
-    if (!(this.ref.notes & m)) notes.push(['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B'][i]);
+    if (this.ref.notes & m) x.push(JZZ.MIDI.STY.noteName(i));
     m <<= 1;
   }
-  this.cells.push(new Cell(this.more, 0, 'Note mute', notes.join(' ') || 'none'));
+  x = x.length == 12 ? 'all' : x.length ? x.join(' ') : 'none'
+  this.cells.push(new Cell(this.more, 0, 'Notes', x));
+  x = [];
   m = 1;
   for (i = 0; i < 33; i++) {
-    if (!(this.ref.chords & m)) chords.push(JZZ.MIDI.STY.chordName(i));
+    if (this.ref.chords & m) x.push(JZZ.MIDI.STY.chordName(i));
     m <<= 1;
   }
-  this.cells.push(new Cell(this.more, 0, 'Chord mute', chords.join(' ') || 'none'));
+  x = x.length == 33 ? 'all' : x.length ? x.join(' ') : 'none'
+  this.cells.push(new Cell(this.more, 0, 'Chords', x));
+  this.cells.push(new Cell(this.more, 0, 'Source', JZZ.MIDI.STY.noteName(this.ref.chord[0]) + JZZ.MIDI.STY.chordName(this.ref.chord[1])));
+  if (this.ref.ctab) {
+    this.cells.push(new Cell(this.more, 0, 'NTR', JZZ.MIDI.STY.ntrName(this.ref.ntr)));
+    this.cells.push(new Cell(this.more, 0, 'NTT', JZZ.MIDI.STY.nttName(this.ref.ntt)));
+    this.cells.push(new Cell(this.more, 0, 'High key', JZZ.MIDI.STY.noteName(this.ref.hikey)));
+    this.cells.push(new Cell(this.more, 0, 'Low lim', noteName(this.ref.lolim)));
+    this.cells.push(new Cell(this.more, 0, 'High lim', noteName(this.ref.hilim)));
+    this.cells.push(new Cell(this.more, 0, 'RTR', JZZ.MIDI.STY.rtrName(this.ref.rtr)));
+    if (this.ref.extra) {
+      x = [];
+      for (i = 0; i < this.ref.extra.length; i++) x.push(hex(this.ref.extra[i]));
+      this.cells.push(new Cell(this.more, 0, 'Extra', x.join(' ')));
+    }
+  }
 }
 function populate_otsc() {
   var i, smf;
@@ -243,6 +256,7 @@ function populate_fnrc() {
     this.cells.push(new Cell(this.more, 0, x.name + '&nbsp;&nbsp;', a.join('; ')));
   }
 }
+function noteName(n) { return JZZ.MIDI.STY.noteName(n % 12) + Math.floor(n / 12); }
 </script>
 
 </body>

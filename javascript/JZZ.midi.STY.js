@@ -139,11 +139,22 @@
     ctb.editable = s.charCodeAt(10);
     ctb.notes = s.charCodeAt(11) * 0x100 + s.charCodeAt(12);
     ctb.chords = s.charCodeAt(13) * 0x100000000 + s.charCodeAt(14) * 0x1000000 + s.charCodeAt(15) * 0x10000 + s.charCodeAt(16) * 0x100 + s.charCodeAt(17);
-    //console.log(ctb);
+    ctb.chord = [s.charCodeAt(18), s.charCodeAt(19)];
     return ctb;
   }
   function _splitCtab(s) {
     var ctb = _splitCtb(s);
+    ctb.ctab = true;
+    ctb.ntr = s.charCodeAt(20);
+    ctb.ntt = s.charCodeAt(21);
+    ctb.hikey = s.charCodeAt(22);
+    ctb.lolim = s.charCodeAt(23);
+    ctb.hilim = s.charCodeAt(24);
+    ctb.rtr = s.charCodeAt(25);
+    if (s.charCodeAt(26)) {
+      ctb.extra = [];
+      for (var i = 26; i < s.length; i++) ctb.extra.push(s.charCodeAt(i));
+    }
     return ctb;
   }
   function _splitCtb2(s) {
@@ -216,6 +227,7 @@
     return fnrp;
   }
 
+  function noteName(n) { return ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B'][n]; }
   function chordName(n) {
     return [
       'Maj', 'Maj6', 'Maj7', 'Maj7#11', 'Maj(9)', 'Maj7(9)', 'Maj6(9)', 'aug',
@@ -224,9 +236,23 @@
       'Maj7aug', '7aug', '1+8', '1+5', 'sus4', '1+2+5', 'cancel'
     ][n];
   }
+  function ntrName(n) { return ['Transposition', 'Fixed'][n]; }
+  function nttName(n) { return ['Bypass', 'Melody', 'Chord', 'Bass', 'Melodic Minor', 'Harmonic Minor'][n]; }
+  function rtrName(n) { return ['Stop', 'Pitch shift', 'Pitch shift to root', 'Retrigger', 'Retrigger to root', 'Note generator'][n]; }
+  function partName(n) { return { 8: 'sub rhythm', 9: 'rhythm', 10: 'bass', 11: 'chord 1', 12: 'chord 2', 13: 'pad', 14: 'phrase 1', 15: 'phrase 2' }[n] || n; }
 
+  STY.noteName = noteName;
+  STY.prototype.noteName = noteName;
   STY.chordName = chordName;
   STY.prototype.chordName = chordName;
+  STY.ntrName = ntrName;
+  STY.prototype.ntrName = ntrName;
+  STY.nttName = nttName;
+  STY.prototype.nttName = nttName;
+  STY.rtrName = rtrName;
+  STY.prototype.rtrName = rtrName;
+  STY.partName = partName;
+  STY.prototype.partName = partName;
 
   JZZ.MIDI.STY = STY;
 });
