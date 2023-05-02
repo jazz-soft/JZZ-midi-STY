@@ -198,7 +198,8 @@ function populate_ctab() {
     this.cells.push(new Cell(this.more, 1, 'Ctb2 ' + hex(t.src) + (t.editable ? ' *' : ''), t.name + ' ⇒ ' + JZZ.MIDI.STY.partName(t.dest), t, populate_ctb));
   }
   if (this.ref.cntt) for (i = 0; i < this.ref.cntt.length; i++) {
-    this.cells.push(new Cell(this.more, 0, 'Cntt', '', this.ref));
+    t = this.ref.cntt[i];
+    this.cells.push(new Cell(this.more, 0, 'Cntt ' + hex(t.src), JZZ.MIDI.STY.nttName(t.ntt, true), this.ref));
   }
 }
 function populate_ctb() {

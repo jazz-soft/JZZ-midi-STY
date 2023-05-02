@@ -163,6 +163,8 @@
   }
   function _splitCntt(s) {
     var cntt = {};
+    cntt.src = s.charCodeAt(0);
+    cntt.ntt = s.charCodeAt(1);
     return cntt;
   }
   function _splitOTSc(s) {
@@ -236,8 +238,13 @@
       'Maj7aug', '7aug', '1+8', '1+5', 'sus4', '1+2+5', 'cancel'
     ][n];
   }
-  function ntrName(n) { return ['Transposition', 'Fixed'][n]; }
-  function nttName(n) { return ['Bypass', 'Melody', 'Chord', 'Bass', 'Melodic Minor', 'Harmonic Minor'][n]; }
+  function ntrName(n) { return ['Transposition', 'Fixed', 'Guitar'][n]; }
+  function nttName(n, m) {
+    if (!m) return ['Bypass', 'Melody', 'Chord', 'Bass', 'Melodic Minor', 'Harmonic Minor'][n];
+    var ntt = m == 'g' ? ['All-Purpose', 'Stroke', 'Arpeggio'] :
+      ['Bypass', 'Melody', 'Chord', 'Melodic minor', 'Melodic minor V', 'Harmonic minor', 'Harmonic minor V', 'Natural minor', 'Natural minor V', 'Dorian', 'Dorian V'];
+    return ntt[n & 0x7f] + ((n & 0x80) ? ' / Bass' : '');
+}
   function rtrName(n) { return ['Stop', 'Pitch shift', 'Pitch shift to root', 'Retrigger', 'Retrigger to root', 'Note generator'][n]; }
   function partName(n) { return { 8: 'sub rhythm', 9: 'rhythm', 10: 'bass', 11: 'chord 1', 12: 'chord 2', 13: 'pad', 14: 'phrase 1', 15: 'phrase 2' }[n] || n; }
 
