@@ -235,6 +235,31 @@ function populate_ctb() {
       this.cells.push(new Cell(this.more, 0, 'Extra', x.join(' ')));
     }
   }
+  if (this.ref.ctb2) {
+    this.cells.push(new Cell(this.more, 0, 'Low mid', noteName(this.ref.lomid)));
+    this.cells.push(new Cell(this.more, 0, 'High mid', noteName(this.ref.himid)));
+    this.cells.push(new Cell(this.more, 0, 'L NTR', JZZ.MIDI.STY.ntrName(this.ref.ntrlo)));
+    this.cells.push(new Cell(this.more, 0, 'L NTT', JZZ.MIDI.STY.nttName(this.ref.nttlo, this.ref.ntrlo == 2 ? 'g' : 1)));
+    this.cells.push(new Cell(this.more, 0, 'L High key', JZZ.MIDI.STY.noteName(this.ref.hikeylo)));
+    this.cells.push(new Cell(this.more, 0, 'L Low lim', noteName(this.ref.lolimlo)));
+    this.cells.push(new Cell(this.more, 0, 'L High lim', noteName(this.ref.hilimlo)));
+    this.cells.push(new Cell(this.more, 0, 'L RTR', JZZ.MIDI.STY.rtrName(this.ref.rtrlo)));
+    this.cells.push(new Cell(this.more, 0, 'M NTR', JZZ.MIDI.STY.ntrName(this.ref.ntr)));
+    this.cells.push(new Cell(this.more, 0, 'M NTT', JZZ.MIDI.STY.nttName(this.ref.ntt, this.ref.ntr == 2 ? 'g' : 1)));
+    this.cells.push(new Cell(this.more, 0, 'M High key', JZZ.MIDI.STY.noteName(this.ref.hikey)));
+    this.cells.push(new Cell(this.more, 0, 'M Low lim', noteName(this.ref.lolim)));
+    this.cells.push(new Cell(this.more, 0, 'M High lim', noteName(this.ref.hilim)));
+    this.cells.push(new Cell(this.more, 0, 'M RTR', JZZ.MIDI.STY.rtrName(this.ref.rtr)));
+    this.cells.push(new Cell(this.more, 0, 'H NTR', JZZ.MIDI.STY.ntrName(this.ref.ntrhi)));
+    this.cells.push(new Cell(this.more, 0, 'H NTT', JZZ.MIDI.STY.nttName(this.ref.ntthi, this.ref.ntrhi == 2 ? 'g' : 1)));
+    this.cells.push(new Cell(this.more, 0, 'H High key', JZZ.MIDI.STY.noteName(this.ref.hikeyhi)));
+    this.cells.push(new Cell(this.more, 0, 'H Low lim', noteName(this.ref.lolimhi)));
+    this.cells.push(new Cell(this.more, 0, 'H High lim', noteName(this.ref.hilimhi)));
+    this.cells.push(new Cell(this.more, 0, 'H RTR', JZZ.MIDI.STY.rtrName(this.ref.rtrhi)));
+    x = [];
+    for (i = 0; i < this.ref.extra.length; i++) x.push(hex(this.ref.extra[i]));
+    this.cells.push(new Cell(this.more, 0, 'Extra', x.join(' ')));
+  }
 }
 function populate_otsc() {
   var i, smf;

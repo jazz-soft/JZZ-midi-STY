@@ -159,6 +159,29 @@
   }
   function _splitCtb2(s) {
     var ctb = _splitCtb(s);
+    ctb.ctb2 = true;
+    ctb.lomid = s.charCodeAt(20);
+    ctb.himid = s.charCodeAt(21);
+    ctb.ntrlo = s.charCodeAt(22);
+    ctb.nttlo = s.charCodeAt(23);
+    ctb.hikeylo = s.charCodeAt(24);
+    ctb.lolimlo = s.charCodeAt(25);
+    ctb.hilimlo = s.charCodeAt(26);
+    ctb.rtrlo = s.charCodeAt(27);
+    ctb.ntr = s.charCodeAt(28);
+    ctb.ntt = s.charCodeAt(29);
+    ctb.hikey = s.charCodeAt(30);
+    ctb.lolim = s.charCodeAt(31);
+    ctb.hilim = s.charCodeAt(32);
+    ctb.rtr = s.charCodeAt(33);
+    ctb.ntrhi = s.charCodeAt(34);
+    ctb.ntthi = s.charCodeAt(35);
+    ctb.hikeyhi = s.charCodeAt(36);
+    ctb.lolimhi = s.charCodeAt(37);
+    ctb.hilimhi = s.charCodeAt(38);
+    ctb.rtrhi = s.charCodeAt(39);
+    ctb.extra = [];
+    for (var i = 40; i < s.length; i++) ctb.extra.push(s.charCodeAt(i));
     return ctb;
   }
   function _splitCntt(s) {
