@@ -15,6 +15,8 @@
   /* istanbul ignore next */
   if (JZZ.MIDI.STY) return;
 
+  var _ver = '0.0.2';
+
   function STY(smf) {
     var i, j, k, s, t, x;
     if (!(smf instanceof JZZ.MIDI.SMF)) smf = new JZZ.MIDI.SMF(smf);
@@ -65,6 +67,7 @@
       if (smf[i].type == 'MHhd') this.mhhd = true;
     }
   }
+  STY.version = function() { return _ver; };
 
   function _splitMTrk(trk) {
     var i, t, m;
