@@ -11,8 +11,8 @@
   "keywords": [],
   "author": "jazz-soft (https://jazz-soft.net/)",
   "dependencies": {
-    "jzz": "^1.6.1",
-    "jzz-midi-smf": "^1.7.3"
+    "jzz": "^1.6.3",
+    "jzz-midi-smf": "^1.7.5"
   },
   "devDependencies": {
     "eslint": "^8.40.0",

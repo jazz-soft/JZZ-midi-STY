@@ -69,6 +69,12 @@
   }
   STY.version = function() { return _ver; };
 
+  STY.dump = function() {
+    var smf = new JZZ.MIDI.SMF();
+
+    return smf.dump();
+  };
+
   function _splitMTrk(trk) {
     var i, t, m;
     var ttt = [];
