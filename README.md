@@ -7,6 +7,8 @@ coming soon...
 [![build](https://github.com/jazz-soft/JZZ-midi-STY/actions/workflows/build.yml/badge.svg)](https://github.com/jazz-soft/JZZ-midi-STY/actions)
 [![Coverage Status](https://coveralls.io/repos/github/jazz-soft/JZZ-midi-STY/badge.svg?branch=main)](https://coveralls.io/github/jazz-soft/JZZ-midi-STY?branch=main)
 
+[Work in progress demo](https://jazz-soft.github.io/modules/sty/index.html)
+
 ## Some useful Style links
 * http://wierzba.homepage.t-online.de/stylefiles_v101.pdf
 * http://www.jososoft.dk/yamaha/articles/keyboard_and_style.pdf
