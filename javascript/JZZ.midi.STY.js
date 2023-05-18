@@ -15,7 +15,7 @@
   /* istanbul ignore next */
   if (JZZ.MIDI.STY) return;
 
-  var _ver = '0.0.2';
+  var _ver = '0.0.3';
 
   function STY(smf) {
     var i, j, k, s, t, x;
@@ -68,8 +68,9 @@
     }
   }
   STY.version = function() { return _ver; };
+  STY.prototype.version = STY.version;
 
-  STY.dump = function() {
+  STY.prototype.dump = function() {
     var smf = new JZZ.MIDI.SMF();
 
     return smf.dump();
@@ -78,19 +79,17 @@
   function _splitMTrk(trk) {
     var i, t, m;
     var ttt = [];
-    var cl = 0;
     t = new JZZ.MIDI.SMF.MTrk();
     t.title = '';
     ttt.push(t);
     for (i = 0; i < trk.length; i++) {
       m = trk[i];
       if (m.ff == 6) {
-        cl = m.tt;
         t = new JZZ.MIDI.SMF.MTrk();
         t.title = m.dd;
         ttt.push(t);
       }
-      t.add(m.tt - cl, m);
+      t.add(m.tt, m);
     }
     return ttt;
   }

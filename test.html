@@ -167,14 +167,17 @@ function populate() {
   if (this.ref.mhhd) this.cells.push(new Cell(this.more, 0, 'MHhd', 'not supported'));
 }
 function populate_mtrk() {
-  var i, j, t, smf, trk;
+  var i, j, k, t, smf, trk;
   this.cells = [];
   for (i = 0; i < this.ref.mtrk.length; i++) {
     t = this.ref.trk[this.ref.mtrk[i]];
     smf = new JZZ.MIDI.SMF(0, this.ref.ppqn);
     trk = new JZZ.MIDI.SMF.MTrk();
     if (this.ref.tempo) trk.add(0, JZZ.MIDI.smfTempo(this.ref.tempo));
-    for (j = 0; j < t.length; j++) trk.add(t[j].tt, t[j]);
+    if (t.length) {
+      k = t[0].tt;
+      for (j = 0; j < t.length; j++) trk.add(t[j].tt - k, t[j]);
+    }
     smf.push(trk);
     this.cells.push(new MidiCell(this.more, this.ref.mtrk[i], smf));
   }
