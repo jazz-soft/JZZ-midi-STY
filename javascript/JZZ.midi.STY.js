@@ -292,5 +292,26 @@
   STY.partName = partName;
   STY.prototype.partName = partName;
 
+  STY.prototype.tracks = function() { return this.mtrk ? this.mtrk.slice() : []; };
+
+  STY.prototype.track = function(s) {
+    var trk, t, i, k;
+    if (s.substr(0, 4) == 'OTSc') {
+      s = s.substr(4);
+      k = parseInt(s);
+      if (k == s && this.otsc) t = this.otsc[k - 1];
+      if (t) trk = new JZZ.MIDI.SMF.MTrk();
+    }
+    else {
+      t = this.trk[s];
+      if (t) trk = new JZZ.MIDI.SMF.MTrk();
+      if (s != '' && s != 'SFF1' && s != 'SFF2') trk.add(0, JZZ.MIDI.smfTempo(this.ref.tempo));
+    }
+    if (!trk) return;
+    if (t.length) {
+      for (i = 0; i < t.length; i++) trk.add(t[i].tt, t[i]);
+    }
+  };
+
   JZZ.MIDI.STY = STY;
 });
