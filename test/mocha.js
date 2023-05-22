@@ -7,6 +7,8 @@ var version = require('../package.json').version;
 
 describe('STY', function() {
   it('version', function() {
+    var sty = JZZ.MIDI.STY();
+    assert.equal(sty.version(), version);
     assert.equal(JZZ.MIDI.STY.version(), version);
   });
 });

@@ -18,6 +18,16 @@
   var _ver = '0.0.4';
 
   function STY(smf) {
+    var self = this;
+    if (!(self instanceof STY)) {
+      self = new STY();
+    }
+    self.ppqn = 96;
+    if (smf) self.load(smf);
+    return self;
+  }
+
+  STY.prototype.load = function(smf) {
     var i, j, k, s, t, x;
     if (!(smf instanceof JZZ.MIDI.SMF)) smf = new JZZ.MIDI.SMF(smf);
     this.ppqn = smf.ppqn;
