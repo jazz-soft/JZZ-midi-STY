@@ -23,6 +23,7 @@
       self = new STY();
     }
     self.ppqn = 96;
+    self.tempo = 500000; // 120 BPM
     if (smf) self.load(smf);
     return self;
   }
@@ -324,6 +325,7 @@
     if (t.length) {
       for (i = 0; i < t.length; i++) trk.add(t[i].tt, t[i]);
     }
+    return trk;
   };
 
   STY.prototype.export = function(s) {
