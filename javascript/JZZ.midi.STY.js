@@ -22,8 +22,13 @@
     if (!(self instanceof STY)) {
       self = new STY();
     }
+    self.tsig = [4, 4];
     self.ppqn = 96;
     self.tempo = 500000; // 120 BPM
+    self.bpm = 120;
+    self.name = 'Untitled';
+    self.mtrk = [];
+    self.trk = {};
     if (smf) self.load(smf);
     return self;
   }
@@ -32,12 +37,12 @@
     var i, j, k, s, t, x;
     if (!(smf instanceof JZZ.MIDI.SMF)) smf = new JZZ.MIDI.SMF(smf);
     this.ppqn = smf.ppqn;
+    this.mtrk = [];
+    this.trk = {};
     for (i = 0; i < smf.length; i++) {
       if (smf[i].type == 'MTrk') {
-        if (!this.mtrk) {
+        if (!this.mtrk.length) {
           x = _splitMTrk(smf[i]);
-          this.mtrk = [];
-          this.trk = {};
           for (j = 0; j < x.length; j++) {
             t = x[j];
             s = t.title;
@@ -48,7 +53,10 @@
                   this.bpm = Math.round(60000000 / this.tempo);
                 }
                 else if (t[k].isTimeSignature()) {
-                  this.tsig = t[k].getTimeSignature().join('/');
+                  this.tsig = t[k].getTimeSignature4();
+                }
+                else if (t[k].isCopyright()) {
+                  this.copyright = t[k].getText();
                 }
               }
             }
@@ -83,7 +91,37 @@
 
   STY.prototype.dump = function() {
     var smf = new JZZ.MIDI.SMF();
-
+    var trk = new JZZ.MIDI.SMF.MTrk();
+    smf.push(trk);
+    var i, m;
+    var t = this.trk[''];
+    if (!t) {
+      t = new JZZ.MIDI.SMF.MTrk();
+      t.smfTimeSignature(1, 1);
+      t.smfTempo(this.tempo);
+      if (this.copyright) t.smfCopyright(this.copyright);
+    }
+    for (i = 0; i < t.length; i++) {
+      m = t[i];
+      if (m.isCopyright()) { if (this.copyright) trk.smfCopyright(this.copyright); }
+      else if (m.isTempo()) trk.smfTempo(this.tempo);
+      else if (m.isTimeSignature()) trk.smfTimeSignature(this.tsig[0], this.tsig[1], this.tsig[2], this.tsig[3]);
+      else trk.add(0, m);
+    }
+    t = this.trk['SFF1'] || this.trk['SFF2'];
+    if (!t) {
+      t = new JZZ.MIDI.SMF.MTrk();
+      t.smfMarker('SFF1');
+      t.smfSeqName(this.name);
+      t.send([0xf0, 0x43, 0x76, 0x1a, 0x10, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0xf7]);
+      t.send([0xf0, 0x43, 0x73, 0x39, 0x11, 0x00, 0x46, 0x00, 0xf7]);
+      t.send([0xf0, 0x43, 0x73, 0x01, 0x51, 0x05, 0x00, 0x01, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+      t.send([0xf0, 0x43, 0x73, 0x01, 0x51, 0x05, 0x00, 0x02, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+    }
+    for (i = 0; i < t.length; i++) {
+      m = t[i];
+      trk.add(0, m);
+    }
     return smf.dump();
   };
 
@@ -96,7 +134,7 @@
     ttt.push(t);
     for (i = 0; i < trk.length; i++) {
       m = trk[i];
-      if (m.ff == 6) {
+      if (m.isMarker()) {
         t.add(m.tt - k, JZZ.MIDI.smfEndOfTrack());
         t = new JZZ.MIDI.SMF.MTrk();
         k = m.tt;

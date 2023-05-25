@@ -160,7 +160,7 @@ function hex(n) {
 }
 function populate() {
   this.cells = [];
-  this.cells.push(new Cell(this.more, 1, 'MTrk', [this.ref.tsig || '', this.ref.bpm ? this.ref.bpm + ' bpm' : '' ].join('; ').trim(), this.ref, populate_mtrk));
+  this.cells.push(new Cell(this.more, 1, 'MTrk', [this.ref.tsig.slice(0, 2).join('/'), this.ref.bpm ? this.ref.bpm + ' bpm' : '' ].join('; ').trim(), this.ref, populate_mtrk));
   if (this.ref.casm) this.cells.push(new Cell(this.more, 1, 'CASM', '', this.ref, populate_casm));
   if (this.ref.otsc) this.cells.push(new Cell(this.more, 1, 'OTSc', '', this.ref, populate_otsc));
   if (this.ref.fnrc) this.cells.push(new Cell(this.more, 1, 'FNRc', '', this.ref, populate_fnrc));
