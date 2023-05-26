@@ -15,7 +15,7 @@
   /* istanbul ignore next */
   if (JZZ.MIDI.STY) return;
 
-  var _ver = '0.0.4';
+  var _ver = '0.0.5';
 
   function STY(smf) {
     var self = this;
@@ -90,37 +90,47 @@
   STY.prototype.version = STY.version;
 
   STY.prototype.dump = function() {
-    var smf = new JZZ.MIDI.SMF();
+    var smf = new JZZ.MIDI.SMF(0, this.ppqn);
     var trk = new JZZ.MIDI.SMF.MTrk();
     smf.push(trk);
-    var i, m;
-    var t = this.trk[''];
-    if (!t) {
-      t = new JZZ.MIDI.SMF.MTrk();
-      t.smfTimeSignature(1, 1);
-      t.smfTempo(this.tempo);
-      if (this.copyright) t.smfCopyright(this.copyright);
+    var i, j, t, tt, m;
+    var tr = this.trk[''];
+    if (!tr) {
+      tr = new JZZ.MIDI.SMF.MTrk();
+      tr.smfTimeSignature(1, 1);
+      tr.smfTempo(this.tempo);
+      if (this.copyright) tr.smfCopyright(this.copyright);
     }
-    for (i = 0; i < t.length; i++) {
-      m = t[i];
+    for (i = 0; i < tr.length; i++) {
+      m = tr[i];
       if (m.isCopyright()) { if (this.copyright) trk.smfCopyright(this.copyright); }
       else if (m.isTempo()) trk.smfTempo(this.tempo);
       else if (m.isTimeSignature()) trk.smfTimeSignature(this.tsig[0], this.tsig[1], this.tsig[2], this.tsig[3]);
       else trk.add(0, m);
     }
-    t = this.trk['SFF1'] || this.trk['SFF2'];
-    if (!t) {
-      t = new JZZ.MIDI.SMF.MTrk();
-      t.smfMarker('SFF1');
-      t.smfSeqName(this.name);
-      t.send([0xf0, 0x43, 0x76, 0x1a, 0x10, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0xf7]);
-      t.send([0xf0, 0x43, 0x73, 0x39, 0x11, 0x00, 0x46, 0x00, 0xf7]);
-      t.send([0xf0, 0x43, 0x73, 0x01, 0x51, 0x05, 0x00, 0x01, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
-      t.send([0xf0, 0x43, 0x73, 0x01, 0x51, 0x05, 0x00, 0x02, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+    tr = this.trk['SFF1'] || this.trk['SFF2'];
+    if (!tr) {
+      tr = new JZZ.MIDI.SMF.MTrk();
+      tr.smfMarker('SFF1');
+      tr.smfSeqName(this.name);
+      tr.send([0xf0, 0x43, 0x76, 0x1a, 0x10, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0xf7]);
+      tr.send([0xf0, 0x43, 0x73, 0x39, 0x11, 0x00, 0x46, 0x00, 0xf7]);
+      tr.send([0xf0, 0x43, 0x73, 0x01, 0x51, 0x05, 0x00, 0x01, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+      tr.send([0xf0, 0x43, 0x73, 0x01, 0x51, 0x05, 0x00, 0x02, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
     }
-    for (i = 0; i < t.length; i++) {
-      m = t[i];
+    for (i = 0; i < tr.length; i++) {
+      m = tr[i];
       trk.add(0, m);
+    }
+    t = 0;
+    for (i = 0; i < this.mtrk.length; i++) {
+      tr = this.trk[this.mtrk[i]];
+      for (j = 0; j < tr.length; j++) {
+        m = tr[j];
+        tt = m.tt + t;
+        trk.add(tt, m);
+      }
+      t = tt;
     }
     return smf.dump();
   };
