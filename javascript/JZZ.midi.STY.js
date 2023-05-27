@@ -61,7 +61,7 @@
               }
             }
             else if (s == 'SFF1' || s == 'SFF2') {
-              for (k = 0; k < t.length; k++) if (t[k].ff == 3) this.name = t[k].dd;
+              for (k = 0; k < t.length; k++) if (t[k].isSeqName()) this.name = t[k].getText();
             }
             else this.mtrk.push(s);
             this.trk[s] = t;
@@ -120,7 +120,8 @@
     }
     for (i = 0; i < tr.length; i++) {
       m = tr[i];
-      trk.add(0, m);
+      if (m.isSeqName()) trk.smfSeqName(this.name);
+      else trk.add(0, m);
     }
     t = 0;
     for (i = 0; i < this.mtrk.length; i++) {
