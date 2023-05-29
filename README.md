@@ -67,10 +67,30 @@ STY(JZZ);
 ##### AMD
 
 ```js
-require(['JZZ', 'JZZ.midi.SMF'], function(JZZ, dummy) {
-require(['JZZ', 'JZZ.midi.SMF', 'JZZ.midi.STY'], function(JZZ, smf, sty) {
+require(['JZZ', 'JZZ.midi.SMF', 'JZZ.midi.STY'], function(JZZ, dummy1, dummy2) {
   // ...
 });
+```
+
+## Style files
+
+##### Reading file
+
+```js
+var fs = require('fs');
+var data = fs.readFileSync('my-style.sty', 'binary');
+// data can be String, Buffer, ArrayBuffer, Uint8Array or Int8Array
+var sty = new JZZ.MIDI.STY(data);
+```
+
+##### Extracting MIDI tracks
+
+```js
+console.log('All style tracks:', sty.tracks());
+// additional track names not reported by tracks() can be:
+// '', 'SFF1', 'SFF2', 'OTSc1', 'OTSc2', 'OTSc3', 'OTSc4' (if present)
+var smf = sty.export('Intro A'); // see JZZ.MIDI.SMF
+fs.writeFileSync('intro-a.mid', smf.dump(), 'binary');
 ```
 
 ## Some useful Style links
