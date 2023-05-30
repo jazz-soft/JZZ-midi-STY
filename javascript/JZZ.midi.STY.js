@@ -83,7 +83,7 @@
           this.fnrc = _splitFNRc(smf[i].data);
         }
       }
-      if (smf[i].type == 'MHhd') this.mhhd = true;
+      if (smf[i].type == 'MHhd') this.mhhd = smf[i].data;
     }
   }
   STY.version = function() { return _ver; };
@@ -136,6 +136,7 @@
     //if (this.casm) smf.push(new JZZ.MIDI.SMF.Chunk('CASM', _dumpCASM(this.casm)));
     if (this.otsc) smf.push(new JZZ.MIDI.SMF.Chunk('OTSc', _dumpOTSc(this.otsc)));
     //if (this.frnc) smf.push(new JZZ.MIDI.SMF.Chunk('FRNc', _dumpFRNc(this.frnc)));
+    if (this.mhhd) smf.push(new JZZ.MIDI.SMF.Chunk('MHhd', this.mhhd));
     return smf.dump();
   };
 
