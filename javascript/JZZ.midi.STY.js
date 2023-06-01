@@ -135,7 +135,7 @@
     }
     //if (this.casm) smf.push(new JZZ.MIDI.SMF.Chunk('CASM', _dumpCASM(this.casm)));
     if (this.otsc) smf.push(new JZZ.MIDI.SMF.Chunk('OTSc', _dumpOTSc(this.otsc)));
-    //if (this.frnc) smf.push(new JZZ.MIDI.SMF.Chunk('FRNc', _dumpFRNc(this.frnc)));
+    if (this.fnrc) smf.push(new JZZ.MIDI.SMF.Chunk('FNRc', _dumpFNRc(this.fnrc)));
     if (this.mhhd) smf.push(new JZZ.MIDI.SMF.Chunk('MHhd', this.mhhd));
     return smf.dump();
   };
@@ -306,8 +306,23 @@
     }
     return fnrc;
   }
-  function _dumpFRNc(frnc) {
+  function _pack(t, s) {
+    s = s || '';
+    return t + JZZ.MIDI.SMF.num4(s.length) + s;
+  }
+  function _dumpFNRc(frnc) {
+    var i, f, s;
     var dump = '';
+    for (i = 0; i < frnc.length; i++) {
+      f = frnc[i];
+      s = [
+        JZZ.MIDI.SMF.num4(f.tempo).substr(1),
+        String.fromCharCode(f.tsig[0]), String.fromCharCode(f.tsig[1]),
+        _pack('Mnam', f.name), _pack('Gnam', f.genre),
+        _pack('Kwd1', f.kwd1), _pack('Kwd2', f.kwd2)
+      ].join('');
+      dump += _pack('FNRP', s);
+    }
     return dump;
   }
   function _splitFNRP(s) {
