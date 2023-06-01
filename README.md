@@ -7,7 +7,7 @@ coming soon...
 [![build](https://github.com/jazz-soft/JZZ-midi-STY/actions/workflows/build.yml/badge.svg)](https://github.com/jazz-soft/JZZ-midi-STY/actions)
 [![Coverage Status](https://coveralls.io/repos/github/jazz-soft/JZZ-midi-STY/badge.svg?branch=main)](https://coveralls.io/github/jazz-soft/JZZ-midi-STY?branch=main)
 
-[Work in progress demo](https://jazz-soft.github.io/modules/sty/index.html)
+[Work-in-progress demo](https://jazz-soft.github.io/modules/sty/index.html)
 
 ## Install
 
@@ -79,7 +79,7 @@ require(['JZZ', 'JZZ.midi.SMF', 'JZZ.midi.STY'], function(JZZ, dummy1, dummy2) {
 ```js
 var fs = require('fs');
 var data = fs.readFileSync('my-style.sty', 'binary');
-// data can be String, Buffer, ArrayBuffer, Uint8Array or Int8Array
+// data can be String, Buffer, ArrayBuffer, Uint8Array, Int8Array, or a JZZ.MIDI.SMF object
 var sty = new JZZ.MIDI.STY(data);
 ```
 

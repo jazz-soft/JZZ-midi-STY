@@ -15,7 +15,7 @@
   /* istanbul ignore next */
   if (JZZ.MIDI.STY) return;
 
-  var _ver = '0.0.5';
+  var _ver = '0.0.6';
 
   function STY(smf) {
     var self = this;
