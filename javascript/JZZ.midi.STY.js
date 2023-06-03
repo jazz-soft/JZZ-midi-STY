@@ -133,7 +133,7 @@
       }
       t = tt;
     }
-    //if (this.casm) smf.push(new JZZ.MIDI.SMF.Chunk('CASM', _dumpCASM(this.casm)));
+    if (this.casm) smf.push(new JZZ.MIDI.SMF.Chunk('CASM', _dumpCASM(this.casm)));
     if (this.otsc) smf.push(new JZZ.MIDI.SMF.Chunk('OTSc', _dumpOTSc(this.otsc)));
     if (this.fnrc) smf.push(new JZZ.MIDI.SMF.Chunk('FNRc', _dumpFNRc(this.fnrc)));
     if (this.mhhd) smf.push(new JZZ.MIDI.SMF.Chunk('MHhd', this.mhhd));
@@ -177,7 +177,15 @@
     return casm;
   }
   function _dumpCASM(casm) {
+    var i, j, s, x;
     var dump = '';
+    for (i = 0; i < casm.length; i++) {
+      x = casm[i];
+      s = _pack('Sdec', x.sdec);
+      if (x.ctab) for (j = 0; j < x.ctab.length; j++) s += _pack('Ctab', _dumpCtab(x.ctab[j]));
+      if (x.ctb2) for (j = 0; j < x.ctb2.length; j++) s += _pack('Ctb2', _dumpCtab(x.ctb2[j]));
+      dump += _pack('CSEG', s);
+    }
     return dump;
   }
   function _splitCSEG(s) {
@@ -221,6 +229,10 @@
     ctb.chord = [s.charCodeAt(18), s.charCodeAt(19)];
     return ctb;
   }
+  function _dumpCtb(ctb) {
+    var dump = '';
+    return dump;
+  }
   function _splitCtab(s) {
     var ctb = _splitCtb(s);
     ctb.ctab = true;
@@ -235,6 +247,10 @@
       for (var i = 26; i < s.length; i++) ctb.extra.push(s.charCodeAt(i));
     }
     return ctb;
+  }
+  function _dumpCtab(ctab) {
+    var dump = _dumpCtb(ctab);
+    return dump;
   }
   function _splitCtb2(s) {
     var ctb = _splitCtb(s);
@@ -262,6 +278,10 @@
     ctb.extra = [];
     for (var i = 40; i < s.length; i++) ctb.extra.push(s.charCodeAt(i));
     return ctb;
+  }
+  function _dumpCtb2(ctb2) {
+    var dump = _dumpCtb(ctb2);
+    return dump;
   }
   function _splitCntt(s) {
     var cntt = {};

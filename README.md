@@ -79,7 +79,8 @@ require(['JZZ', 'JZZ.midi.SMF', 'JZZ.midi.STY'], function(JZZ, dummy1, dummy2) {
 ```js
 var fs = require('fs');
 var data = fs.readFileSync('my-style.sty', 'binary');
-// data can be String, Buffer, ArrayBuffer, Uint8Array, Int8Array, or a JZZ.MIDI.SMF object
+// data can be String, Buffer, ArrayBuffer, Uint8Array, Int8Array,
+// or a JZZ.MIDI.SMF object
 var sty = new JZZ.MIDI.STY(data);
 ```
 
@@ -91,6 +92,7 @@ console.log('All style tracks:', sty.tracks());
 // '', 'SFF1', 'SFF2', 'OTSc1', 'OTSc2', 'OTSc3', 'OTSc4' (if present)
 var smf = sty.export('Intro A'); // see JZZ.MIDI.SMF
 fs.writeFileSync('intro-a.mid', smf.dump(), 'binary');
+fs.writeFileSync('otsc1.mid', sty.export('OTSc1').dump(), 'binary');
 ```
 
 ## Some useful Style links
