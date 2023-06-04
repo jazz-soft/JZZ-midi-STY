@@ -230,8 +230,12 @@
     return ctb;
   }
   function _dumpCtb(ctb) {
-    var dump = '';
-    return dump;
+    return [
+      String.fromCharCode(ctb.src),
+      (ctb.name + '\x00\x00\x00\x00\x00\x00\x00\x00').substr(0, 8),
+      String.fromCharCode(ctb.dest),
+      ctb.editable ? '\x01' : '\x00',
+    ].join('');
   }
   function _splitCtab(s) {
     var ctb = _splitCtb(s);
