@@ -183,7 +183,7 @@
       x = casm[i];
       s = _pack('Sdec', x.sdec);
       if (x.ctab) for (j = 0; j < x.ctab.length; j++) s += _pack('Ctab', _dumpCtab(x.ctab[j]));
-      if (x.ctb2) for (j = 0; j < x.ctb2.length; j++) s += _pack('Ctb2', _dumpCtab(x.ctb2[j]));
+      if (x.ctb2) for (j = 0; j < x.ctb2.length; j++) s += _pack('Ctb2', _dumpCtb2(x.ctb2[j]));
       dump += _pack('CSEG', s);
     }
     return dump;
@@ -235,6 +235,12 @@
       (ctb.name + '\x00\x00\x00\x00\x00\x00\x00\x00').substr(0, 8),
       String.fromCharCode(ctb.dest),
       ctb.editable ? '\x01' : '\x00',
+      String.fromCharCode(ctb.notes >> 8), String.fromCharCode(ctb.notes & 255),
+      String.fromCharCode((ctb.chords >> 32) & 255), String.fromCharCode((ctb.chords >> 24) & 255),
+      String.fromCharCode((ctb.chords >> 16) & 255), String.fromCharCode((ctb.chords >> 8) & 255),
+      String.fromCharCode(ctb.chords & 255),
+      String.fromCharCode(ctb.chord[0] & 255),
+      String.fromCharCode(ctb.chord[1] & 255)
     ].join('');
   }
   function _splitCtab(s) {
@@ -252,9 +258,18 @@
     }
     return ctb;
   }
-  function _dumpCtab(ctab) {
-    var dump = _dumpCtb(ctab);
-    return dump;
+  function _dumpCtab(ctb) {
+    var dump = [
+      _dumpCtb(ctb),
+      String.fromCharCode(ctb.ntr),
+      String.fromCharCode(ctb.ntt),
+      String.fromCharCode(ctb.hikey),
+      String.fromCharCode(ctb.lolim),
+      String.fromCharCode(ctb.hilim),
+      String.fromCharCode(ctb.rtr)
+    ];
+    if (ctb.extra) for (var i = 0; i < ctb.extra.length; i++) dump.push(String.fromCharCode(ctb.extra[i]));
+    return dump.join('');
   }
   function _splitCtb2(s) {
     var ctb = _splitCtb(s);
