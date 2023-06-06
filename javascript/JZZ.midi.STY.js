@@ -298,9 +298,32 @@
     for (var i = 40; i < s.length; i++) ctb.extra.push(s.charCodeAt(i));
     return ctb;
   }
-  function _dumpCtb2(ctb2) {
-    var dump = _dumpCtb(ctb2);
-    return dump;
+  function _dumpCtb2(ctb) {
+    var dump = [
+      _dumpCtb(ctb),
+      String.fromCharCode(ctb.lomid),
+      String.fromCharCode(ctb.himid),
+      String.fromCharCode(ctb.ntrlo),
+      String.fromCharCode(ctb.nttlo),
+      String.fromCharCode(ctb.hikeylo),
+      String.fromCharCode(ctb.lolimlo),
+      String.fromCharCode(ctb.hilimlo),
+      String.fromCharCode(ctb.rtrlo),
+      String.fromCharCode(ctb.ntr),
+      String.fromCharCode(ctb.ntt),
+      String.fromCharCode(ctb.hikey),
+      String.fromCharCode(ctb.lolim),
+      String.fromCharCode(ctb.hilim),
+      String.fromCharCode(ctb.rtr),
+      String.fromCharCode(ctb.ntrhi),
+      String.fromCharCode(ctb.ntthi),
+      String.fromCharCode(ctb.hikeyhi),
+      String.fromCharCode(ctb.lolimhi),
+      String.fromCharCode(ctb.hilimhi),
+      String.fromCharCode(ctb.rtrhi)
+    ];
+    if (ctb.extra) for (var i = 0; i < ctb.extra.length; i++) dump.push(String.fromCharCode(ctb.extra[i]));
+    return dump.join('');
   }
   function _splitCntt(s) {
     var cntt = {};
