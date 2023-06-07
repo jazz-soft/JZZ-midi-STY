@@ -1,5 +1,5 @@
 # JZZ-midi-STY
-coming soon...
+Yamaha-PSR styles
 
 [![npm](https://img.shields.io/npm/v/jzz-midi-sty.svg)](https://www.npmjs.com/package/jzz-midi-sty)
 [![npm](https://img.shields.io/npm/dt/jzz-midi-sty.svg)](https://www.npmjs.com/package/jzz-midi-sty)
@@ -93,6 +93,23 @@ console.log('All style tracks:', sty.tracks());
 var smf = sty.export('Intro A'); // see JZZ.MIDI.SMF
 fs.writeFileSync('intro-a.mid', smf.dump(), 'binary');
 fs.writeFileSync('otsc1.mid', sty.export('OTSc1').dump(), 'binary');
+```
+
+##### Cleaning up
+
+```js
+// remove the OTSc section: it is not required
+// unless you use it on a Yamaha keyboard (see the docs...)
+delete sty.otsc;
+// remove the FNRc section: it is not used for playback
+// and in most cases contains garbage (see the docs...)
+delete sty.fnrc;
+```
+
+##### Writing file
+
+```js
+fs.writeFileSync('new-style.sty', sty.dump(), 'binary');
 ```
 
 ## Some useful Style links
