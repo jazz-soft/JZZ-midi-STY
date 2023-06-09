@@ -16,6 +16,7 @@
   if (JZZ.MIDI.STY) return;
 
   var _ver = '0.0.8';
+  var _now = JZZ.lib.now;
 
   function STY(smf) {
     var self = this;
@@ -478,6 +479,23 @@
       smf.push(trk);
       return smf;
     }
+  }
+
+  STY.prototype.player = function() {
+    var pl = new Player();
+    return pl;
+  };
+
+  function Player() {
+    var self = new JZZ.Widget();
+    self._info.name = 'STYLE Player';
+    self._info.manufacturer = 'Jazz-Soft';
+    self._info.version = _ver;
+    self.playing = false;
+    self._pos = 0;
+    self._tick = (function(x) { return function(){ x.tick(); }; })(self);
+    for (var k in Player.prototype) if (Player.prototype.hasOwnProperty(k)) self[k] = Player.prototype[k];
+    return self;
   }
 
   JZZ.MIDI.STY = STY;
