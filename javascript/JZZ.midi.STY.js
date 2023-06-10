@@ -483,6 +483,15 @@
 
   STY.prototype.player = function() {
     var pl = new Player();
+    pl._tr = {};
+    var i, k, t, tr;
+    var keys = Object.keys(this.trk);
+    for (k = 0; k < keys.length; k++) {
+      t = this.trk[keys[k]];
+      tr = [];
+      for (i = 0; i < t.length; i++) tr.push(JZZ.MIDI(t[i]));
+      pl.trk[k] = tr;
+    }
     return pl;
   };
 
@@ -492,6 +501,7 @@
     self._info.manufacturer = 'Jazz-Soft';
     self._info.version = _ver;
     self.playing = false;
+    self.trk = {};
     self._pos = 0;
     self._tick = (function(x) { return function(){ x.tick(); }; })(self);
     for (var k in Player.prototype) if (Player.prototype.hasOwnProperty(k)) self[k] = Player.prototype[k];
