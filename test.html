@@ -13,6 +13,7 @@
 .title { min-width:8em; display:inline-block; margin-right:.2em; font-weight:bold; }
 .drop { margin-left:1.5em; }
 .hide { display:none; }
+.ctrl { float:right; }
 </style>
 </head>
 
@@ -36,9 +37,28 @@ input.accept = '.sty,.sst,.prs';
 input.addEventListener("change", load_file);
 panel.appendChild(input);
 panel.appendChild(document.createElement('hr'));
+var ctrl = document.createElement('div');
+panel.appendChild(ctrl);
+ctrl.className = 'ctrl';
+add_buttons([['Intro A', '↦ A'], ['Intro B', '↦ B'], ['Intro C', '↦ C'], ['Intro D', '↦ D']]);
+add_buttons([['Main A', '⇒ A'], ['Main B', '⇒ B'], ['Main C', '⇒ C'], ['Main D', '⇒ D']]);
+add_buttons([['Fill In AA', '⇻ A'], ['Fill In BB', '⇻ B'], ['Fill In CC', '⇻ C'], ['Fill In DD', '⇻ D'], ['Fill In BA', '⇻ BA']]);
+add_buttons([['Ending A', '⇥ A'], ['Ending B', '⇥ B'], ['Ending C', '⇥ C'], ['Ending D', '⇥ D']]);
 var display = document.createElement('div');
 panel.appendChild(display);
 var gui;
+
+function add_buttons(a) {
+  var i, b;
+  var p = document.createElement('div');
+  for (i = 0; i < a.length; i++) {
+    b = document.createElement('button');
+    b.innerHTML = a[i][1];
+    b.title = a[i][0];
+    p.appendChild(b);
+  }
+  ctrl.appendChild(p);
+}
 
 function load_file() {
   if (window.FileReader) {
@@ -65,7 +85,7 @@ function Cell(parent, type, title, text, ref, pop) {
   var self = this;
   this.populate = pop;
   this.div = document.createElement('div');
-  var knob = square(type);//document.createElement('span');
+  var knob = square(type);
   if (type == 1) {
     knob.innerHTML = '+';
     knob.addEventListener('click', function() {

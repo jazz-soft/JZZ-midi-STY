@@ -1,7 +1,7 @@
 {
   "name": "jzz-midi-sty",
   "version": "0.0.8",
-  "description": "coming soon",
+  "description": "Yamaha-PSR styles",
   "main": "javascript/JZZ.midi.STY.js",
   "scripts": {
     "test": "nyc mocha",
