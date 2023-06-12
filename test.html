@@ -14,6 +14,7 @@
 .drop { margin-left:1.5em; }
 .hide { display:none; }
 .ctrl { float:right; }
+.ctrl button { width:4em; }
 </style>
 </head>
 
@@ -44,6 +45,10 @@ add_buttons([['Intro A', '↦ A'], ['Intro B', '↦ B'], ['Intro C', '↦ C'], [
 add_buttons([['Main A', '⇒ A'], ['Main B', '⇒ B'], ['Main C', '⇒ C'], ['Main D', '⇒ D']]);
 add_buttons([['Fill In AA', '⇻ A'], ['Fill In BB', '⇻ B'], ['Fill In CC', '⇻ C'], ['Fill In DD', '⇻ D'], ['Fill In BA', '⇻ BA']]);
 add_buttons([['Ending A', '⇥ A'], ['Ending B', '⇥ B'], ['Ending C', '⇥ C'], ['Ending D', '⇥ D']]);
+ctrl.appendChild(document.createElement('hr'));
+add_buttons([['C', 'C'], ['C#/Db', 'C#/Db'], ['D', 'D'], ['D#/Eb', 'D#/Eb']]);
+add_buttons([['E', 'E'], ['F', 'F'], ['F#/Gb', 'F#/Gb'], ['G', 'G']]);
+add_buttons([['G#/Ab', 'G#/Ab'], ['A', 'A'], ['A#/Bb', 'A#/Bb'], ['B', 'B'], ['none', '⨉']]);
 var display = document.createElement('div');
 panel.appendChild(display);
 var gui;
