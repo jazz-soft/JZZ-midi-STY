@@ -39,20 +39,26 @@ input.addEventListener("change", load_file);
 panel.appendChild(input);
 panel.appendChild(document.createElement('hr'));
 var ctrl = document.createElement('div');
+var buttons = {};
 panel.appendChild(ctrl);
-ctrl.className = 'ctrl';
-add_buttons([['Intro A', '↦ A'], ['Intro B', '↦ B'], ['Intro C', '↦ C'], ['Intro D', '↦ D']]);
-add_buttons([['Main A', '⇒ A'], ['Main B', '⇒ B'], ['Main C', '⇒ C'], ['Main D', '⇒ D']]);
-add_buttons([['Fill In AA', '⇻ A'], ['Fill In BB', '⇻ B'], ['Fill In CC', '⇻ C'], ['Fill In DD', '⇻ D'], ['Fill In BA', '⇻ BA']]);
-add_buttons([['Ending A', '⇥ A'], ['Ending B', '⇥ B'], ['Ending C', '⇥ C'], ['Ending D', '⇥ D']]);
+ctrl.classList.add('ctrl', 'hide');
+add_buttons([['Intro A', '↦ A', soon], ['Intro B', '↦ B', soon], ['Intro C', '↦ C', soon], ['Intro D', '↦ D', soon]]);
+add_buttons([['Main A', '⇒ A', soon], ['Main B', '⇒ B', soon], ['Main C', '⇒ C', soon], ['Main D', '⇒ D', soon]]);
+add_buttons([['Fill In AA', '⇻ A', soon], ['Fill In BB', '⇻ B', soon], ['Fill In CC', '⇻ C', soon], ['Fill In DD', '⇻ D', soon], ['Fill In BA', '⇻ BA', soon]]);
+add_buttons([['Ending A', '⇥ A', soon], ['Ending B', '⇥ B', soon], ['Ending C', '⇥ C', soon], ['Ending D', '⇥ D', soon]]);
 ctrl.appendChild(document.createElement('hr'));
-add_buttons([['C', 'C'], ['C#/Db', 'C#/Db'], ['D', 'D'], ['D#/Eb', 'D#/Eb']]);
-add_buttons([['E', 'E'], ['F', 'F'], ['F#/Gb', 'F#/Gb'], ['G', 'G']]);
-add_buttons([['G#/Ab', 'G#/Ab'], ['A', 'A'], ['A#/Bb', 'A#/Bb'], ['B', 'B'], ['none', '⨉']]);
+add_buttons([['C', 'C', soon], ['C#/Db', 'C#/Db', soon], ['D', 'D', soon], ['D#/Eb', 'D#/Eb', soon]]);
+add_buttons([['E', 'E', soon], ['F', 'F', soon], ['F#/Gb', 'F#/Gb', soon], ['G', 'G', soon]]);
+add_buttons([['G#/Ab', 'G#/Ab', soon], ['A', 'A', soon], ['A#/Bb', 'A#/Bb', soon], ['B', 'B', soon], ['none', '⨉', soon]]);
 var display = document.createElement('div');
 panel.appendChild(display);
 var gui;
 
+var part = [
+  'Intro A', 'Intro B', 'Intro C', 'Intro D', 'Main A',  'Main B',  'Main C',  'Main D',
+  'Fill In AA', 'Fill In BB', 'Fill In CC', 'Fill In DD', 'Fill In BA', 'Ending A', 'Ending B', 'Ending C', 'Ending D'
+];
+function soon() { alert('Coming soon...'); }
 function add_buttons(a) {
   var i, b;
   var p = document.createElement('div');
@@ -60,11 +66,18 @@ function add_buttons(a) {
     b = document.createElement('button');
     b.innerHTML = a[i][1];
     b.title = a[i][0];
+    b.onclick = a[i][2];
     p.appendChild(b);
+    buttons[a[i][0]] = b;
   }
   ctrl.appendChild(p);
 }
-
+function update_controls(sty) {
+  if (!sty) return;
+  var k;
+  for (k = 0; k < part.length; k++) buttons[part[k]].disabled = !sty.trk[part[k]];
+  ctrl.classList.remove('hide');
+}
 function load_file() {
   if (window.FileReader) {
     var reader = new FileReader();
@@ -77,6 +90,7 @@ function load_sty(data) {
   try {
     var sty = new STY(data);
     display_sty(sty);
+    update_controls(sty);
   }
   catch (err) { alert(err.message); }
 }
