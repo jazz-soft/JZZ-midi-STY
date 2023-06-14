@@ -14,7 +14,8 @@
 .drop { margin-left:1.5em; }
 .hide { display:none; }
 .ctrl { float:right; }
-.ctrl button { width:4em; }
+.ctrl button { width:4em; height:1.8em; }
+.ctrl .cntr { display:inline-block; width:3em; text-align:center; }
 </style>
 </head>
 
@@ -42,6 +43,17 @@ var ctrl = document.createElement('div');
 var buttons = {};
 panel.appendChild(ctrl);
 ctrl.classList.add('ctrl', 'hide');
+var div = document.createElement('div');
+var playbtn = document.createElement('button');
+playbtn.innerHTML = '▶';
+div.appendChild(playbtn);
+var counter = document.createElement('span');
+counter.className = 'cntr';
+counter.innerHTML = '--';
+div.appendChild(counter);
+var part = document.createElement('span');
+div.appendChild(part);
+ctrl.appendChild(div);
 add_buttons([['Intro A', '↦ A', soon], ['Intro B', '↦ B', soon], ['Intro C', '↦ C', soon], ['Intro D', '↦ D', soon]]);
 add_buttons([['Main A', '⇒ A', soon], ['Main B', '⇒ B', soon], ['Main C', '⇒ C', soon], ['Main D', '⇒ D', soon]]);
 add_buttons([['Fill In AA', '⇻ A', soon], ['Fill In BB', '⇻ B', soon], ['Fill In CC', '⇻ C', soon], ['Fill In DD', '⇻ D', soon], ['Fill In BA', '⇻ BA', soon]]);
