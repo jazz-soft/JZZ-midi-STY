@@ -507,6 +507,12 @@
     for (var k in Player.prototype) if (Player.prototype.hasOwnProperty(k)) self[k] = Player.prototype[k];
     return self;
   }
+  Player.prototype.play = function() {
+    this.playing = true;
+  };
+  Player.prototype.stop = function() {
+    this.playing = false;
+  };
 
   JZZ.MIDI.STY = STY;
 });

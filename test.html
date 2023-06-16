@@ -46,6 +46,7 @@ ctrl.classList.add('ctrl', 'hide');
 var div = document.createElement('div');
 var playbtn = document.createElement('button');
 playbtn.innerHTML = '▶';
+playbtn.onclick = play;
 div.appendChild(playbtn);
 var counter = document.createElement('span');
 counter.className = 'cntr';
@@ -65,11 +66,18 @@ add_buttons([['G#/Ab', 'G#/Ab', soon], ['A', 'A', soon], ['A#/Bb', 'A#/Bb', soon
 var display = document.createElement('div');
 panel.appendChild(display);
 var gui;
+var player;
 
 var part = [
   'Intro A', 'Intro B', 'Intro C', 'Intro D', 'Main A',  'Main B',  'Main C',  'Main D',
   'Fill In AA', 'Fill In BB', 'Fill In CC', 'Fill In DD', 'Fill In BA', 'Ending A', 'Ending B', 'Ending C', 'Ending D'
 ];
+function play() {
+  if (player) {
+    if (player.playing) player.stop();
+    else player.play();
+  }
+}
 function soon() { alert('Coming soon...'); }
 function add_buttons(a) {
   var i, b;
@@ -101,13 +109,20 @@ function load_file() {
 function load_sty(data) {
   try {
     var sty = new STY(data);
+    player = sty.player();
     display_sty(sty);
     update_controls(sty);
   }
   catch (err) { alert(err.message); }
 }
-function display_sty(sty) {
+function cleanup() {
   display.innerHTML = '';
+  if (player) {
+    player.stop();
+    player = undefined;
+  }
+}
+function display_sty(sty) {
   gui = new Cell(display, 0, 'Style', sty.name, sty, populate);
   gui.expand();
 }
