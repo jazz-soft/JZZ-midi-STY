@@ -55,10 +55,10 @@ div.appendChild(counter);
 var part = document.createElement('span');
 div.appendChild(part);
 ctrl.appendChild(div);
-add_buttons([['Intro A', '↦ A', soon], ['Intro B', '↦ B', soon], ['Intro C', '↦ C', soon], ['Intro D', '↦ D', soon]]);
-add_buttons([['Main A', '⇒ A', soon], ['Main B', '⇒ B', soon], ['Main C', '⇒ C', soon], ['Main D', '⇒ D', soon]]);
-add_buttons([['Fill In AA', '⇻ A', soon], ['Fill In BB', '⇻ B', soon], ['Fill In CC', '⇻ C', soon], ['Fill In DD', '⇻ D', soon], ['Fill In BA', '⇻ BA', soon]]);
-add_buttons([['Ending A', '⇥ A', soon], ['Ending B', '⇥ B', soon], ['Ending C', '⇥ C', soon], ['Ending D', '⇥ D', soon]]);
+add_buttons([['Intro A', '↦ A', prt('Intro A')], ['Intro B', '↦ B', prt('Intro B')], ['Intro C', '↦ C', prt('Intro C')], ['Intro D', '↦ D', prt('Intro D')]]);
+add_buttons([['Main A', '⇒ A', prt('Main A')], ['Main B', '⇒ B', prt('Main B')], ['Main C', '⇒ C', prt('Main C')], ['Main D', '⇒ D', prt('Main D')]]);
+add_buttons([['Fill In AA', '⇻ A', prt('Fill In AA')], ['Fill In BB', '⇻ B', prt('Fill In BB')], ['Fill In CC', '⇻ C', prt('Fill In CC')], ['Fill In DD', '⇻ D', prt('Fill In DD')], ['Fill In BA', '⇻ BA', prt('Fill In BA')]]);
+add_buttons([['Ending A', '⇥ A', prt('Ending A')], ['Ending B', '⇥ B', prt('Ending B')], ['Ending C', '⇥ C', prt('Ending C')], ['Ending D', '⇥ D', prt('Ending D')]]);
 ctrl.appendChild(document.createElement('hr'));
 add_buttons([['C', 'C', soon], ['C#/Db', 'C#/Db', soon], ['D', 'D', soon], ['D#/Eb', 'D#/Eb', soon]]);
 add_buttons([['E', 'E', soon], ['F', 'F', soon], ['F#/Gb', 'F#/Gb', soon], ['G', 'G', soon]]);
@@ -76,6 +76,14 @@ function play() {
   if (player) {
     if (player.playing) player.stop();
     else player.play();
+  }
+}
+function prt(name) {
+  return function() {
+    if (player) {
+      player.schedule(name);
+      player.play();
+    }
   }
 }
 function soon() { alert('Coming soon...'); }

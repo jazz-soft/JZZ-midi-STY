@@ -513,6 +513,11 @@
   Player.prototype.stop = function() {
     this.playing = false;
   };
+  Player.prototype.schedule = function(s) {
+    if (this.trk[s]) {
+      this.next = s;
+    }
+  };
 
   JZZ.MIDI.STY = STY;
 });
