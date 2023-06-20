@@ -508,15 +508,91 @@
     return self;
   }
   Player.prototype.play = function() {
+    this.event = undefined;
     this.playing = true;
+    this.paused = false;
+    this._ptr = 0;
+    this._pos = 0;
+    this._p0 = 0;
+    this._t0 = _now();
+    this.tick();
   };
   Player.prototype.stop = function() {
+    this._pos = 0;
     this.playing = false;
+    this.event = 'stop';
+    this.paused = undefined;
+  };
+  Player.prototype.pause = function() {
+    this.event = 'pause';
+  };
+  Player.prototype.resume = function() {
+    if (this.playing) return;
+    if (this.paused) {
+      this.event = undefined;
+      this._t0 = _now();
+      this.playing = true;
+      this.paused = false;
+      this.tick();
+    }
+    else this.play();
   };
   Player.prototype.schedule = function(s) {
     if (this.trk[s]) {
       this.next = s;
     }
+  };
+  function _filter(e) { this._receive(e); }
+  Player.prototype._filter = _filter;
+  Player.prototype.filter = function(f) {
+    this._filter = f instanceof Function ? f : _filter;
+  };
+  function _div(s) { return (s.charCodeAt(0) << 16) + (s.charCodeAt(1) << 8) + s.charCodeAt(2); }
+  Player.prototype._receive = function(e) {
+    if (e.ff == 0x51 && this.ppqn) {
+      this._mul = this.ppqn * 1000.0 / _div(e.dd);
+      this.mul = this._mul * this._speed;
+      this._t0 = _now();
+      this._p0 = this._pos;
+    }
+    this._emit(e);
+  };
+  Player.prototype.tick = function() {
+    var t = _now();
+    var e;
+    this._pos = this._p0 + (t - this._t0) * this.mul;
+    for(; this._ptr < this._data.length; this._ptr++) {
+      e = this._data[this._ptr];
+      if (e.tt > this._pos) break;
+      this._filter(e);
+    }
+    if (this._ptr >= this._data.length) {
+      if (this._loop && this._loop != -1) this._loop--;
+      if (this._loop) {
+        this._ptr = 0;
+        this._p0 = 0;
+        this._t0 = t;
+      }
+      else this.stop();
+      this.onEnd();
+    }
+    if (this.event == 'stop') {
+      this.playing = false;
+      this.paused = false;
+      this._pos = 0;
+      this._ptr = 0;
+      this.sndOff();
+      this.event = undefined;
+    }
+    if (this.event == 'pause') {
+      this.playing = false;
+      this.paused = true;
+      if (this._pos >= this._duration) this._pos = this._duration - 1;
+      this._p0 = this._pos;
+      this.sndOff();
+      this.event = undefined;
+    }
+    if (this.playing) JZZ.lib.schedule(this._tick);
   };
 
   JZZ.MIDI.STY = STY;
