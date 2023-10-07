@@ -118,6 +118,7 @@ function load_sty(data) {
   try {
     var sty = new STY(data);
     player = sty.player();
+    player.connect(midi_out);
     display_sty(sty);
     update_controls(sty);
   }

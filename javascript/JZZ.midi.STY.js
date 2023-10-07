@@ -86,7 +86,7 @@
       }
       if (smf[i].type == 'MHhd') this.mhhd = smf[i].data;
     }
-  }
+  };
   STY.version = function() { return _ver; };
   STY.prototype.version = STY.version;
 
@@ -109,7 +109,7 @@
       else if (m.isTimeSignature()) trk.smfTimeSignature(this.tsig[0], this.tsig[1], this.tsig[2], this.tsig[3]);
       else trk.add(0, m);
     }
-    tr = this.trk['SFF1'] || this.trk['SFF2'];
+    tr = this.trk.SFF1 || this.trk.SFF2;
     if (!tr) {
       tr = new JZZ.MIDI.SMF.MTrk();
       tr.smfMarker('SFF1');
@@ -479,7 +479,7 @@
       smf.push(trk);
       return smf;
     }
-  }
+  };
 
   STY.prototype.player = function() {
     var pl = new Player();
