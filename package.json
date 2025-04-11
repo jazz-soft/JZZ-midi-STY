@@ -1,6 +1,6 @@
 {
   "name": "jzz-midi-sty",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Yamaha-PSR styles",
   "main": "javascript/JZZ.midi.STY.js",
   "scripts": {
@@ -15,19 +15,19 @@
   ],
   "author": "jazz-soft (https://jazz-soft.net/)",
   "dependencies": {
-    "jzz": "^1.8.5",
-    "jzz-midi-smf": "^1.9.4"
+    "jzz": "^1.9.3",
+    "jzz-midi-smf": "^1.9.7"
   },
   "devDependencies": {
-    "eslint": "^9.9.1",
+    "eslint": "^9.24.0",
     "grunt": "^1.6.1",
     "grunt-contrib-jshint": "^3.2.0",
     "grunt-contrib-uglify": "^5.2.2",
-    "jzz-gui-select": "^1.1.5",
-    "jzz-midi-gm": "^1.3.9",
-    "jzz-synth-tiny": "^1.4.1",
-    "mocha": "^10.7.3",
-    "nyc": "^17.0.0"
+    "jzz-gui-select": "^1.1.7",
+    "jzz-midi-gm": "^1.4.0",
+    "jzz-synth-tiny": "^1.4.3",
+    "mocha": "^11.1.0",
+    "nyc": "^17.1.0"
   },
   "repository": {
     "type": "git",
